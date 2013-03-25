@@ -26,4 +26,9 @@ public class SocketWrapper implements HttpSocket {
     public void close() throws IOException {
         socket.close();
     }
+
+    @Override
+    public boolean isClosed() {
+        return socket.isClosed();
+    }
 }

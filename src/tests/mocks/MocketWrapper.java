@@ -27,4 +27,9 @@ public class MocketWrapper implements HttpSocket {
     public void close() throws IOException {
         mocket.close();
     }
+
+    @Override
+    public boolean isClosed() {
+        return mocket.isClosed();
+    }
 }

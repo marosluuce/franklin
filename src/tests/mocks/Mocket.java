@@ -7,10 +7,12 @@ import java.io.OutputStream;
 public class Mocket {
     private InputStream inputStream;
     private OutputStream outputStream;
+    private boolean closed;
 
     public Mocket(InputStream inputStream, OutputStream outputStream) {
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        closed = false;
     }
 
     public InputStream getInputStream() {
@@ -24,5 +26,10 @@ public class Mocket {
     public void close() throws IOException {
         inputStream.close();
         outputStream.close();
+        closed = true;
+    }
+
+    public boolean isClosed() {
+        return closed;
     }
 }

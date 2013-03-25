@@ -15,11 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RequestHandlerTest {
     private Router router;
     private OutputStream outputStream;
     private RequestHandler requestHandler;
+    private HttpSocket socket;
 
     @Before
     public void setUp() {
@@ -27,12 +29,9 @@ public class RequestHandlerTest {
         String request = "HTTP/1.1 / GET\r\n\r\n";
         InputStream inputStream = new ByteArrayInputStream(request.getBytes(Charset.forName("utf-8")));
         outputStream = new ByteArrayOutputStream();
-        HttpSocket socket = new MocketWrapper(new Mocket(inputStream, outputStream));
+        socket = new MocketWrapper(new Mocket(inputStream, outputStream));
         requestHandler = new RequestHandler(socket, router);
-    }
 
-    @Test
-    public void testRun() {
         router.addRoute("/", new Responder() {
             @Override
             public Map<String, Object> respond(Map<String, Object> request) throws IOException {
@@ -43,8 +42,17 @@ public class RequestHandlerTest {
                 return response;
             }
         });
+    }
 
+    @Test
+    public void testRun() {
         requestHandler.run();
         assertEquals("HTTP/1.1 200 OK\r\n\r\nWe do what we must because we can.", outputStream.toString());
+    }
+
+    @Test
+    public void testTheSocketIsClosedOnRun() {
+        requestHandler.run();
+        assertTrue(socket.isClosed());
     }
 }

@@ -16,12 +16,13 @@ import static org.junit.Assert.assertTrue;
 public class ServerTest {
     private Server server;
     private Router router;
+    private HttpServerSocket serverSocket;
 
     @Before
     public void setUp() throws IOException {
         router = new Router();
 
-        HttpServerSocket serverSocket = new ServerMocketWrapper(new ServerMocket(new Mocket(null, null)));
+        serverSocket = new ServerMocketWrapper(new ServerMocket(new Mocket(null, null)));
         server = new Server(serverSocket, router);
     }
 
@@ -29,6 +30,14 @@ public class ServerTest {
     public void testServerCreated() throws IOException {
         assertTrue(server.isBound());
         server.close();
+    }
+
+    @Test
+    public void testServerClosedWhenDoneRunning() throws IOException {
+        serverSocket = new ServerMocketWrapper(new ServerMocket(new Mocket(null, null), 1));
+        server = new Server(serverSocket, router);
+        server.run();
+        assertTrue(server.isClosed());
     }
 
     @Test

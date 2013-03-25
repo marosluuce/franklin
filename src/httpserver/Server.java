@@ -4,26 +4,27 @@ import httpserver.sockets.HttpServerSocket;
 import httpserver.sockets.HttpSocket;
 
 import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Server {
     private HttpServerSocket serverSocket;
     private Router router;
-    private ExecutorService threadPool;
+    private RequestProcessor processor;
 
     public Server(HttpServerSocket serverSocket, Router router) throws IOException {
         this.router = router;
         this.serverSocket = serverSocket;
         int cores = Runtime.getRuntime().availableProcessors();
-        threadPool = Executors.newFixedThreadPool(cores);
+        processor = new RequestProcessor(cores);
+
     }
 
     public void run() throws IOException {
         while(!serverSocket.isClosed()) {
             HttpSocket client = serverSocket.accept();
-            threadPool.execute(new RequestHandler(client, router));
+            processor.submit(new RequestHandler(client, router));
         }
+
+        close();
     }
 
     public boolean isBound() {

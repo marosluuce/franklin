@@ -13,6 +13,7 @@ import tests.responders.RedirectResponderTest;
         ResponseWriterTest.class,
         UtilitiesTest.class,
         RequestHandlerTest.class,
+        RequestProcessorTest.class,
         RouterTest.class,
         ServerTest.class,
         ParameterResponderTest.class,

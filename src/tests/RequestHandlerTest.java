@@ -19,7 +19,6 @@ import static org.junit.Assert.assertTrue;
 
 public class RequestHandlerTest {
     private Router router;
-    private OutputStream outputStream;
     private RequestHandler requestHandler;
     private HttpSocket socket;
 
@@ -27,9 +26,8 @@ public class RequestHandlerTest {
     public void setUp() {
         router = new Router();
         String request = "HTTP/1.1 / GET\r\n\r\n";
-        InputStream inputStream = new ByteArrayInputStream(request.getBytes(Charset.forName("utf-8")));
-        outputStream = new ByteArrayOutputStream();
-        socket = new MocketWrapper(new Mocket(inputStream, outputStream));
+        Mocket mocket = new Mocket(new ByteArrayInputStream(request.getBytes(Charset.forName("utf-8"))), new ByteArrayOutputStream());
+        socket = new MocketWrapper(mocket);
         requestHandler = new RequestHandler(socket, router);
 
         router.addRoute("/", new Responder() {
@@ -45,9 +43,9 @@ public class RequestHandlerTest {
     }
 
     @Test
-    public void testRun() {
+    public void testRun() throws IOException {
         requestHandler.run();
-        assertEquals("HTTP/1.1 200 OK\r\n\r\nWe do what we must because we can.", outputStream.toString());
+        assertEquals("HTTP/1.1 200 OK\r\n\r\nWe do what we must because we can.", socket.getOutputStream().toString());
     }
 
     @Test

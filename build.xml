@@ -19,12 +19,13 @@
         <javac srcdir="src" destdir="${classes}" classpathref="classpath" includeantruntime="false"/>
     </target>
 
-    <target name="build" depends="compile">
+    <target name="build" depends="compile, test">
         <jar destfile="Franklin.jar" basedir="${classes}">
             <manifest>
                 <attribute name="Main-Class" value="httpserver.ServerMain"/>
             </manifest>
         </jar>
+        <fail message="Tests failure detected." if="test.failed" />
     </target>
 
     <target name="run">
@@ -32,7 +33,7 @@
     </target>
 
     <target name="test" depends="compile">
-        <junit fork="yes" printsummary="on" haltonfailure="yes" haltonerror="yes">
+        <junit fork="yes" printsummary="on" haltonfailure="yes" haltonerror="yes" failureproperty="test.failed">
             <classpath refid="classpath"/>
             <formatter type="brief" usefile="false"/>
             <test name="tests.TestSuite" haltonfailure="no"/>

@@ -20,16 +20,12 @@
     </target>
 
     <target name="build" depends="compile, test">
+        <fail message="Tests failure detected." if="test.failed" />
         <jar destfile="Franklin.jar" basedir="${classes}">
             <manifest>
                 <attribute name="Main-Class" value="httpserver.ServerMain"/>
             </manifest>
         </jar>
-        <fail message="Tests failure detected." if="test.failed" />
-    </target>
-
-    <target name="run">
-        <java jar="franklin.jar" fork="true"/>
     </target>
 
     <target name="test" depends="compile">

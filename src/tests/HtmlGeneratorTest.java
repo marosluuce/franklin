@@ -37,6 +37,7 @@ public class HtmlGeneratorTest {
         assertEquals("<a href=\"/test.jpg\">test.jpg</a>", generator.makeLink(file, rootDir));
     }
 
+
     @Test
     public void testEchoPage() {
         Map<String, String> values = new HashMap<>();

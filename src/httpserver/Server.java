@@ -15,7 +15,6 @@ public class Server {
         this.serverSocket = serverSocket;
         int cores = Runtime.getRuntime().availableProcessors();
         processor = new RequestProcessor(cores);
-
     }
 
     public void run() throws IOException {

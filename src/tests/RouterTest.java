@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class RouterTest {
     private File rootDir = new File(System.getProperty("user.dir"), "/public");
@@ -43,4 +45,9 @@ public class RouterTest {
         assertEquals("HTTP/1.1 200 OK", response.get("status-line"));
     }
 
+    @Test
+    public void testConfiguredRouter() {
+        Router router = Router.getConfiguredRouter(new File("public"));
+        assertFalse(router.getRoutes().isEmpty());
+    }
 }

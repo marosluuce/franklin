@@ -87,4 +87,10 @@ public class UtilitiesTest {
 
         assertTrue(Arrays.equals(fileBytes, Utilities.readFile(file)));
     }
+
+    @Test
+    public void testStringToBytes() {
+        String line = "But there's no sense crying over every mistake";
+        assertEquals(line, new String(Utilities.toBytes(line)));
+    }
 }

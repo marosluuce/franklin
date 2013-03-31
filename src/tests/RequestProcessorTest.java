@@ -13,12 +13,12 @@ import static org.junit.Assert.assertTrue;
 
 public class RequestProcessorTest {
     @Test
-    public void testRequestProcessed() {
+    public void testRequestProcessed() throws InterruptedException {
         MocketWrapper client = new MocketWrapper(new Mocket(null, null));
         RequestProcessor processor = new RequestProcessor(1);
         Future<?> job = processor.submit(new RequestHandler(client, new Router()));
 
-        int tries = 15;
+        int tries = 10;
         for (int i = 1; i <= tries; i++) {
             try {
                 assertTrue(job.isDone());
@@ -27,6 +27,7 @@ public class RequestProcessorTest {
                 if (i == tries) {
                     throw e;
                 }
+                Thread.sleep(1);
             }
         }
     }

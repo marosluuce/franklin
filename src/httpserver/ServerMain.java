@@ -1,9 +1,5 @@
 package httpserver;
 
-import httpserver.responders.FileSystemResponder;
-import httpserver.responders.ParameterResponder;
-import httpserver.responders.PutPostResponder;
-import httpserver.responders.RedirectResponder;
 import httpserver.sockets.ServerSocketWrapper;
 
 import java.io.File;
@@ -18,8 +14,7 @@ public class ServerMain {
         Map<String, Object> parsedArgs = parseArgs(args);
 
         File rootDir = new File((String) parsedArgs.get("Root-Dir"));
-        Router router = new Router();
-        setRoutes(router, rootDir);
+        Router router = Router.getConfiguredRouter(rootDir);
 
         Server httpServer;
         int port = (int) parsedArgs.get("Port");
@@ -30,13 +25,6 @@ public class ServerMain {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void setRoutes(Router router, File rootDir) {
-        router.addRoute("filesystem", new FileSystemResponder(rootDir));
-        router.addRoute("/redirect", new RedirectResponder("/"));
-        router.addRoute("/parameters", new ParameterResponder());
-        router.addRoute("/form", new PutPostResponder());
     }
 
     private static Map<String, Object> parseArgs(String[] args) {

@@ -66,4 +66,8 @@ public class Utilities {
 
         return Collections.unmodifiableMap(codes);
     }
+
+    public static byte[] toBytes(String string) {
+        return string.getBytes(Charset.forName("utf-8"));
+    }
 }

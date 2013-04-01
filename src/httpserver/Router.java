@@ -16,7 +16,7 @@ public class Router {
         router.addRoute("/redirect", new RedirectResponder("/"));
         router.addRoute("/parameters", new ParameterResponder());
         router.addRoute("/form", new PutPostResponder());
-//        router.addRoute("/hello", new HelloResponder());
+        router.addRoute("/hello", new HelloResponder());
         return router;
     }
 
